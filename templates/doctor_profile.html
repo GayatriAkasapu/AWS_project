@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Doctor Profile - MEDTRACK</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+    body {
+      background-image: url("{{ url_for('static', filename='images/bg8.jpg') }}");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      font-family: 'Segoe UI', sans-serif;
+      padding-top: 80px;
+    }
+
+    .navbar {
+      background-color: rgba(255, 255, 255, 0.95);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-brand span:first-child {
+      font-size: 1.5rem;
+      color: orangered;
+    }
+
+    .navbar-brand span:nth-child(2) {
+      color: #0ea5e9;
+    }
+
+    .navbar-brand span:last-child {
+      color: #000;
+    }
+
+    .nav-link {
+      color: #0a0a0b !important;
+    }
+
+    .nav-link.active, .nav-link:hover {
+      color: #13751f !important;
+    }
+
+    .bg-white {
+      background-color: rgba(255, 255, 255, 0.95);
+      border-radius: 1rem;
+      backdrop-filter: blur(4px);
+      box-shadow: 0 0 12px rgba(14, 165, 233, 0.08);
+    }
+
+    .profile-card {
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .profile-pic {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid #195e2e;
+      margin-bottom: 15px;
+    }
+
+    .info-label {
+      font-weight: 600;
+      color: #495057;
+    }
+
+    .info-value {
+      color: #212529;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light px-4">
+  <a class="navbar-brand fw-bold d-flex align-items-center gap-1" href="#">
+    <span>+</span><span>MEDTRACK</span>
+  </a>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item"><a class="nav-link" href="{{ url_for('doctor_dashboard') }}">Dashboard</a></li>
+      <li class="nav-item"><a class="nav-link active" href="{{ url_for('doctor_profile') }}">Profile</a></li>
+      <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Profile Section -->
+<div class="container py-4">
+  <div class="card profile-card bg-white shadow">
+    <div class="card-header bg-success text-white text-center">
+      <h4 class="mb-0">Doctor Profile</h4>
+    </div>
+    <div class="card-body text-center">
+      <!-- Profile Image -->
+      <img src="https://cdn-icons-png.flaticon.com/512/3774/3774299.png" alt="Doctor Image" class="profile-pic">
+
+      <h5 class="fw-bold">Dr. {{ user.name }}</h5>
+      <p class="text-muted">{{ user.email }}</p>
+
+      <!-- Profile Info -->
+      <div class="text-start mt-4">
+        <p><span class="info-label">Specialization:</span> <span class="info-value">{{ user.specialization }}</span></p>
+        <p><span class="info-label">Experience:</span> <span class="info-value">{{ user.get('experience', 'N/A') }} years</span></p>
+        <p><span class="info-label">Gender:</span> <span class="info-value">{{ user.get('gender', 'N/A') }}</span></p>
+        <p><span class="info-label">Address:</span> <span class="info-value">{{ user.get('address', 'N/A') }}</span></p>
+      </div>
+    </div>
+    <div class="card-footer text-end">
+      <a href="{{ url_for('doctor_dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

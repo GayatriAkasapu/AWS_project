@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Book Appointment - MEDTRACK</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <style>
+    body {
+      background-image: url("{{ url_for('static', filename='images/bg9.jpg') }}");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      padding-top: 80px;
+      font-family: 'Segoe UI', sans-serif;
+      color: #1e293b;
+    }
+
+    .navbar {
+      background-color: rgba(255, 255, 255, 0.95) !important;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-brand span:first-child {
+      font-size: 1.5rem;
+      color: orangered;
+    }
+
+    .navbar-brand span:nth-child(2) {
+      color: #0ea5e9;
+    }
+
+    .navbar-brand span:last-child {
+      color: #000;
+    }
+
+    .nav-link {
+      color: #0a0a0b !important;
+    }
+
+    .nav-link.active, .nav-link:hover {
+      color: orangered !important;
+    }
+
+    .bg-white {
+      background-color: rgba(255, 255, 255, 0.95);
+      border-radius: 1rem;
+      backdrop-filter: blur(4px);
+      box-shadow: 0 0 12px rgba(14, 165, 233, 0.08);
+    }
+
+    .btn-primary {
+      border-color: #e9ab0e;
+      background: linear-gradient(to right, #e9ab0e, #e9ab0e);
+      border: none;
+      color: white;
+      font-weight: 500;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(to right, #13751f, #13751f);
+      box-shadow: 0 0 8px #0ea5e9;
+    }
+
+    .doctor-card {
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: 2px solid transparent;
+      background-color: #ffffff;
+    }
+
+    .doctor-card:hover,
+    .btn-check:checked + .doctor-card {
+      border-color: #e9ab0e;
+      background-color: #f0f8ff;
+      box-shadow: 0 0 10px rgba(177, 111, 29, 0.2);
+    }
+
+    .doctor-initial {
+      width: 60px;
+      height: 60px;
+      background-color: #e9ab0e;
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px auto;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    footer {
+      color: #64748b;
+      font-size: 0.875rem;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light px-4">
+  <a class="navbar-brand fw-bold d-flex align-items-center gap-1" href="#">
+    <span>+</span><span>MEDTRACK</span>
+  </a>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item"><a class="nav-link" href="{{ url_for('patient_dashboard') }}">Dashboard</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Profile</a></li>
+      <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container my-5">
+  <div class="bg-white p-5">
+
+    <h4 class="fw-bold mb-3 text-dark">Book an Appointment</h4>
+    <p class="text-muted">Select a doctor and provide your symptoms to book a consultation.</p>
+
+    <!-- Appointment Form -->
+    <form method="POST" action="{{ url_for('book_appointment') }}">
+
+      <!-- Select Doctor -->
+      <div class="row g-4 mb-4">
+        {% for doc_id, doc in doctors.items() %}
+        <div class="col-md-6">
+          <label class="w-100">
+            <input type="radio" class="btn-check" name="doctor_id" value="{{ doc_id }}" required autocomplete="off">
+            <div class="doctor-card p-4 rounded text-center">
+              <div class="doctor-initial">{{ doc.name[0] }}</div>
+              <h6 class="mb-1 fw-bold">Dr. {{ doc.name }}</h6>
+              <small class="text-muted">{{ doc.specialization or 'General' }}</small>
+            </div>
+          </label>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Date & Time -->
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <label for="appointment_date" class="form-label">Appointment Date</label>
+          <input type="date" class="form-control" id="appointment_date" name="appointment_date" required>
+        </div>
+        <div class="col-md-6">
+          <label for="appointment_time" class="form-label">Appointment Time</label>
+          <input type="time" class="form-control" id="appointment_time" name="appointment_time" min="09:00" max="21:00" required>
+        </div>
+      </div>
+
+      <!-- Symptoms -->
+      <div class="mb-4">
+        <label for="symptoms" class="form-label">Symptoms/Reason for Visit</label>
+        <textarea class="form-control" id="symptoms" name="symptoms" rows="4" placeholder="Please describe your symptoms or reason for consultation..." required></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Book Appointment</button>
+    </form>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="text-center text-muted mt-5 mb-4">
+  <small>© 2025 MEDTRACK. All rights reserved.</small>
+</footer>
+
+</body>
+</html>

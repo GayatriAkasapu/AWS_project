@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Signup | MEDTRACK</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+
+  <script>
+    function toggleFields() {
+      const userType = document.getElementById('userType').value;
+      const docFields = document.getElementById('doctorFields');
+      const patFields = document.getElementById('patientFields');
+      const formGrid = document.getElementById('formGrid');
+
+      if (userType === 'doctor' || userType === 'patient') {
+        formGrid.classList.remove('grid-cols-1', 'justify-center');
+        formGrid.classList.add('md:grid-cols-2');
+      } else {
+        formGrid.classList.remove('md:grid-cols-2');
+        formGrid.classList.add('grid-cols-1', 'justify-center');
+      }
+
+      docFields.style.display = userType === 'doctor' ? 'block' : 'none';
+      patFields.style.display = userType === 'patient' ? 'block' : 'none';
+    }
+
+    function togglePasswordVisibility() {
+      const password = document.getElementById("password");
+      const confirm = document.getElementById("confirm_password");
+      const checkbox = document.getElementById("showPassword");
+      const type = checkbox.checked ? "text" : "password";
+      password.type = type;
+      confirm.type = type;
+    }
+
+    window.onload = toggleFields;
+  </script>
+
+  <style>
+    body {
+      background-image: url("{{ url_for('static', filename='images/bg5.jpg') }}");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center bg-gray-100 bg-opacity-80">
+
+  <div class="bg-white bg-opacity-90 p-8 rounded-xl shadow-xl w-full max-w-4xl mx-auto">
+    <h2 class="text-3xl font-bold text-center mb-6 text-yellow-700">Create an Account</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="mb-4">
+          {% for category, message in messages %}
+            <div class="p-3 rounded text-sm bg-{{ 'green-100 text-green-700' if category == 'success' else 'red-100 text-red-700' }}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form action="{{ url_for('signup') }}" method="POST">
+      <div id="formGrid" class="grid gap-6 transition-all duration-300 justify-center">
+
+        <!-- Common Fields -->
+        <div class="space-y-4">
+          <div>
+            <label for="userType" class="block font-semibold">I am a:</label>
+            <select id="userType" name="userType" onchange="toggleFields()" class="w-full mt-1 border border-gray-300 rounded p-2" required>
+              <option value="">Select user type</option>
+              <option value="patient">Patient</option>
+              <option value="doctor">Doctor</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="name" class="block font-semibold">Full Name</label>
+            <input type="text" name="name" id="name" required class="w-full mt-1 border border-gray-300 rounded p-2" placeholder="Your name"/>
+          </div>
+
+          <div>
+            <label for="email" class="block font-semibold">Email</label>
+            <input type="email" name="email" id="email" required class="w-full mt-1 border border-gray-300 rounded p-2" placeholder="you@example.com"/>
+          </div>
+
+          <div>
+            <label for="password" class="block font-semibold">Password</label>
+            <input type="password" name="password" id="password" required class="w-full mt-1 border border-gray-300 rounded p-2" placeholder="********"/>
+          </div>
+
+          <div>
+            <label for="confirm_password" class="block font-semibold">Confirm Password</label>
+            <input type="password" name="confirm_password" id="confirm_password" required class="w-full mt-1 border border-gray-300 rounded p-2" placeholder="********"/>
+          </div>
+
+          <div class="mt-1">
+            <label class="inline-flex items-center">
+              <input type="checkbox" id="showPassword" onclick="togglePasswordVisibility()" class="mr-2">
+              <span class="text-sm">Show Password</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Conditional Fields -->
+        <div>
+          <!-- Patient Fields -->
+          <div id="patientFields" style="display: none;" class="space-y-4">
+            <div>
+              <label for="patient_age" class="block font-semibold">Age</label>
+              <input type="number" name="patient_age" id="patient_age" class="w-full mt-1 border border-gray-300 rounded p-2" placeholder="Enter your age">
+            </div>
+
+            <div>
+              <label for="address" class="block font-semibold">Address</label>
+              <input type="text" name="address" id="address" class="w-full mt-1 border border-gray-300 rounded p-2" placeholder="Your address">
+            </div>
+
+            <div>
+              <label for="mobile" class="block font-semibold">Mobile Number</label>
+              <input type="tel" name="mobile" id="mobile" pattern="[0-9]{10}" maxlength="10" class="w-full mt-1 border border-gray-300 rounded p-2" placeholder="10-digit mobile number">
+            </div>
+          </div>
+
+          <!-- Doctor Fields -->
+          <div id="doctorFields" style="display: none;" class="space-y-4">
+            <div>
+              <label for="doctor_age" class="block font-semibold">Age</label>
+              <input type="number" name="doctor_age" id="doctor_age" class="w-full mt-1 border border-gray-300 rounded p-2" placeholder="Enter your age">
+            </div>
+
+            <div>
+              <label for="specialization" class="block font-semibold">Specialization</label>
+              <select name="specialization" id="specialization" class="w-full mt-1 border border-gray-300 rounded p-2">
+                <option value="">Select specialization</option>
+                <option value="Cardiologist">Cardiologist</option>
+                <option value="Neurologist">Neurologist</option>
+                <option value="Dermatologist">Dermatologist</option>
+                <option value="Pediatrician">Pediatrician</option>
+                <option value="Orthopedic Surgeon">Orthopedic Surgeon</option>
+                <option value="Psychiatrist">Psychiatrist</option>
+                <option value="General Physician">General Physician</option>
+                <option value="ENT Specialist">ENT Specialist</option>
+                <option value="Gynecologist">Gynecologist</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-6">
+        <button type="submit" class="w-full bg-yellow-600 hover:bg-green-700 text-white font-semibold py-2 rounded transition">
+          Sign Up
+        </button>
+      </div>
+    </form>
+
+    <p class="text-center text-sm mt-4">Already have an account?
+      <a href="{{ url_for('login') }}" class="text-yellow-600 font-semibold hover:underline">Login</a>
+    </p>
+  </div>
+
+</body>
+</html>

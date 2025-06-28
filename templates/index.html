@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MEDTRACK Welcome</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <style>
+    .navbar-scroll {
+      background-color: #f3f4f6 !important; /* Tailwind's gray-100 */
+      transition: background-color 0.3s ease;
+    }
+  </style>
+</head>
+<body class="bg-gray-100">
+
+  <!-- Navbar -->
+  <header id="mainNavbar" class="bg-yellow-700 p-4 shadow-lg fixed top-0 left-0 right-0 z-10 transition-colors duration-300">
+    <div class="container mx-auto flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <img id="logoIcon" src="https://img.icons8.com/ios-filled/40/ffffff/plus.png" alt="plus icon" class="w-6 h-6 transition duration-300" />
+        <h1 id="brandName" class="text-white text-2xl font-bold transition duration-300">MEDTRACK</h1>
+      </div>
+      <nav class="space-x-4">
+        <a href="#" class="nav-link text-white font-medium transition duration-300">Home</a>
+        <a href="/login" class="nav-link text-white font-medium transition duration-300">Login</a>
+        <a href="/signup" class="nav-link text-white font-medium transition duration-300">Signup</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero flex items-center justify-center pt-24" style="background-image: url('{{ url_for("static", filename="images/img2.jpg") }}'); height: 32rem; background-size: cover; background-position: center;">
+    <div class="hero-overlay bg-black bg-opacity-60 p-10 rounded-xl text-center text-white max-w-2xl mx-auto shadow-lg animate-fadeIn">
+      <h2 class="text-4xl font-bold mb-4">Welcome to MEDTRACK</h2>
+      <p class="text-lg mb-6">Your trusted smart hospital platform. Experience digital healthcare like never before.</p>
+      <a href="/signup" class="bg-yellow-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg text-lg transition duration-300">
+        Register Now
+      </a>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="py-14 bg-white">
+    <div class="max-w-6xl mx-auto px-4">
+      <!-- Section Heading -->
+      <div class="section-heading relative flex items-center justify-center text-center mb-10">
+        <div class="absolute inset-0 bg-cover bg-center rounded-xl opacity-80" style="background-image: url('{{ url_for('static', filename='images/bag1.jpg') }}');"></div>
+        <h2 class="text-3xl font-bold text-white relative z-10">Core Features</h2>
+      </div>
+
+      <!-- Feature Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="feature-card">
+          <img src="https://img.icons8.com/ios-filled/50/4B5563/doctor-male.png" alt="Doctor Icon" class="mb-4 mx-auto" />
+          <h3 class="text-lg font-semibold">Doctor Directory</h3>
+          <p class="text-gray-600">Browse and manage a comprehensive list of available doctors by specialization and availability.</p>
+        </div>
+        <div class="feature-card">
+          <img src="https://img.icons8.com/ios-filled/50/4B5563/medical-history.png" alt="Record Icon" class="mb-4 mx-auto" />
+          <h3 class="text-lg font-semibold">Smart Patient Records</h3>
+          <p class="text-gray-600">Digitalized patient records with easy access, update history, and integrated medical reports.</p>
+        </div>
+        <div class="feature-card">
+          <img src="https://img.icons8.com/ios-filled/50/4B5563/calendar.png" alt="Calendar Icon" class="mb-4 mx-auto" />
+          <h3 class="text-lg font-semibold">Online Appointment System</h3>
+          <p class="text-black-600">Patients can book appointments with doctors online and receive timely reminders via SMS or email.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About MEDTRACK -->
+  <section class="py-14 bg-slate-100">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="section-heading relative text-center mb-10">
+        <h2 class="text-3xl font-bold relative z-10 text-white">About MEDTRACK</h2>
+        <div class="absolute inset-0 bg-cover bg-center rounded-xl opacity-60 z-0" style="background-image: url('{{ url_for('static', filename='images/bag1.jpg') }}');"></div>
+      </div>
+      <p class="text-lg text-center max-w-3xl mx-auto text-black-700 z-10 relative">
+        MEDTRACK is a modern, digital hospital management platform crafted to simplify operations, enhance patient care, and support hospital staff through smart automation and record handling.
+      </p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-yellow-700 text-white py-6">
+    <div class="container mx-auto text-center">
+      <p>© 2025 MEDTRACK. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scroll Behavior Script -->
+  <script>
+    window.addEventListener('scroll', function () {
+      const navbar = document.getElementById('mainNavbar');
+      const links = navbar.querySelectorAll('.nav-link');
+      const logoIcon = document.getElementById('logoIcon');
+      const brandName = document.getElementById('brandName');
+
+      if (window.scrollY > 50) {
+        navbar.classList.add('navbar-scroll');
+
+        links.forEach(link => {
+          link.classList.add('text-orange-500');
+          link.classList.remove('text-white');
+        });
+
+        logoIcon.src = "https://img.icons8.com/ios-filled/40/fa7d09/plus.png";
+        brandName.classList.add('text-orange-500');
+        brandName.classList.remove('text-white');
+      } else {
+        navbar.classList.remove('navbar-scroll');
+
+        links.forEach(link => {
+          link.classList.remove('text-orange-500');
+          link.classList.add('text-white');
+        });
+
+        logoIcon.src = "https://img.icons8.com/ios-filled/40/ffffff/plus.png";
+        brandName.classList.remove('text-orange-500');
+        brandName.classList.add('text-white');
+      }
+    });
+  </script>
+
+</body>
+</html>

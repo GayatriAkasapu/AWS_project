@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login | MEDTRACK</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+
+  <script>
+    function togglePasswordVisibility() {
+      const passwordInput = document.getElementById("password");
+      const checkbox = document.getElementById("showPassword");
+      passwordInput.type = checkbox.checked ? "text" : "password";
+    }
+  </script>
+
+  <style>
+    body {
+      background-image: url("{{ url_for('static', filename='images/bg5.jpg') }}");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+
+    .glass-card {
+      background-color: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 1rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center px-4 py-12">
+
+  <div class="glass-card w-full max-w-md p-8">
+    <h2 class="text-2xl font-bold text-center mb-6 text-yellow-700">Login to MEDTRACK</h2>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="mb-4">
+          {% for category, message in messages %}
+            <div class="p-3 rounded text-sm bg-{{ 'green-100 text-green-700' if category == 'success' else 'red-100 text-red-700' }}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- Login Form -->
+    <form action="{{ url_for('login') }}" method="POST" class="space-y-4">
+      <!-- Role -->
+      <div>
+        <label for="role" class="block font-semibold">I am a:</label>
+        <select id="role" name="role" required class="w-full mt-1 border border-gray-300 rounded p-2">
+          <option value="">Select role</option>
+          <option value="patient">Patient</option>
+          <option value="doctor">Doctor</option>
+        </select>
+      </div>
+
+      <!-- Email -->
+      <div>
+        <label for="email" class="block font-semibold">Email</label>
+        <input type="email" name="email" id="email" required class="w-full mt-1 border border-gray-300 rounded p-2" placeholder="you@example.com"/>
+      </div>
+
+      <!-- Password -->
+      <div>
+        <label for="password" class="block font-semibold">Password</label>
+        <input type="password" name="password" id="password" required class="w-full mt-1 border border-gray-300 rounded p-2" placeholder="********"/>
+        <div class="flex justify-between items-center mt-1">
+          <label class="inline-flex items-center">
+            <input type="checkbox" id="showPassword" onclick="togglePasswordVisibility()" class="mr-2">
+            <span class="text-sm">Show Password</span>
+          </label>
+          <a href="{{ url_for('forgot_password') }}" class="text-sm text-yellow-600 hover:underline">Forgot Password?</a>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" class="w-full bg-yellow-600 hover:bg-green-700 text-white font-semibold py-2 rounded transition">
+        Login
+      </button>
+    </form>
+
+    <p class="text-center text-sm mt-4">Don't have an account? 
+      <a href="{{ url_for('signup') }}" class="text-yellow-600 font-semibold hover:underline">Sign Up</a>
+    </p>
+  </div>
+
+</body>
+</html>
